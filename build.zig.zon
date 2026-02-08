@@ -36,6 +36,10 @@
             .url = "git+https://github.com/arod1213/zigkeys#765facb22722757b5564a6668d76e38d4927af1b",
             .hash = "zigkeys-0.0.0-muU9lPpNAAAYQ9WdymIhVEchtz110FioxLldAgbOJIz4",
         },
+        .zlua = .{
+            .url = "git+https://github.com/natecraddock/ziglua#cf0e794d429093f0f15694898636a658ebceb703",
+            .hash = "zlua-0.1.0-hGRpC-xTBQARfQcp_35Rcs-Z6KDqtEf3N-IRWi9NFogn",
+        },
     },
     .paths = .{
         "build.zig",

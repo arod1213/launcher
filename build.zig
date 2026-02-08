@@ -4,6 +4,12 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const lua_dep = b.dependency("zlua", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const lua = lua_dep.module("zlua");
+
     const zigkeys = b.dependency("zigkeys", .{
         .target = target,
         .optimize = optimize,
@@ -13,7 +19,10 @@ pub fn build(b: *std.Build) void {
     const mod = b.addModule("launcher", .{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
-        .imports = &.{.{ .name = "zigkeys", .module = zigkeys_mod }},
+        .imports = &.{
+            .{ .name = "zlua", .module = lua },
+            .{ .name = "zigkeys", .module = zigkeys_mod },
+        },
     });
 
     const exe = b.addExecutable(.{

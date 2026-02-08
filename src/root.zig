@@ -2,11 +2,15 @@ const std = @import("std");
 const Allocator = std.mem.Allocator;
 const zigkeys = @import("zigkeys");
 
+const plugin = @import("./plugin.zig").Plugin;
+
 const Key = zigkeys.Key;
 const Modifier = zigkeys.Modifier;
 
 pub const Msg = enum { daw, browser, terminal, settings, music, interface };
 const KC = zigkeys.KeyCommand(Msg);
+
+pub const parse = @import("./parse.zig");
 
 fn openApp(alloc: Allocator, app_name: []const u8) !void {
     const args = [_][]const u8{
