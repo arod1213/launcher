@@ -10,8 +10,6 @@ const Modifier = zigkeys.Modifier;
 const T = *Plugin;
 const KC = zigkeys.KeyCommand(T);
 
-const parse = @import("./parse.zig");
-
 fn handle(_: anytype, k: KC) !void {
     try k.cmd.execute();
 }
@@ -43,7 +41,7 @@ fn loadKeyCommands(alloc: Allocator) ![]const KC {
             plugin_ptr.deinit();
             continue;
         };
-        std.log.info("key {f} for {s}", .{ kc.key, kc.use });
+        // std.log.info("key {f} for {s}", .{ kc.key, kc.use });
 
         try key_commands.append(alloc, kc);
     }

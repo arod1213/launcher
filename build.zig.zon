@@ -33,8 +33,8 @@
     // internet connectivity.
     .dependencies = .{
         .zigkeys = .{
-            .url = "git+https://github.com/arod1213/zigkeys#765facb22722757b5564a6668d76e38d4927af1b",
-            .hash = "zigkeys-0.0.0-muU9lPpNAAAYQ9WdymIhVEchtz110FioxLldAgbOJIz4",
+            .url = "git+https://github.com/arod1213/zigkeys#a66361a43c5474252f229bf60cc922424d36798e",
+            .hash = "zigkeys-0.0.0-muU9lDRTAAAe2PAe9JTHD1ZJyxdyI02SHCh-__Q8cn_k",
         },
         .zlua = .{
             .url = "git+https://github.com/natecraddock/ziglua#cf0e794d429093f0f15694898636a658ebceb703",

@@ -47,7 +47,6 @@ pub const Plugin = struct {
         const lua = try Lua.init(alloc);
         lua.openLibs();
 
-        std.log.info("Loading Lua file: {s}", .{path});
         lua.doFile(path) catch |err| {
             const err_msg = lua.toString(-1) catch "unknown error";
             std.log.err("Lua error in {s}: {s}", .{ path, err_msg });
