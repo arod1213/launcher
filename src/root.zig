@@ -19,24 +19,19 @@ fn openApp(alloc: Allocator, app_name: []const u8) !void {
     _ = try child.wait();
 }
 
-pub const Handler = struct {
-    var alloc: Allocator = undefined;
-
-    pub fn handle(k: KC) !void {
-        const name = switch (k.cmd) {
-            .browser => "Brave Browser",
-            .daw => "Ableton Live 12 Suite",
-            .terminal => "Kitty",
-            .settings => "System Settings",
-            .music => "Spotify",
-            .interface => "NControl",
-        };
-        try openApp(alloc, name);
-    }
-};
+pub fn handle(alloc: Allocator, k: KC) !void {
+    const name = switch (k.cmd) {
+        .browser => "Brave Browser",
+        .daw => "Ableton Live 12 Suite",
+        .terminal => "Kitty",
+        .settings => "System Settings",
+        .music => "Spotify",
+        .interface => "NControl",
+    };
+    try openApp(alloc, name);
+}
 
 pub fn run(alloc: Allocator) !void {
-    Handler.alloc = alloc;
     const cmds = [_]KC{
         KC.init(
             Key.init(11, &[_]Modifier{.control}, true),
@@ -77,5 +72,5 @@ pub fn run(alloc: Allocator) !void {
     };
     var settings = zigkeys.Config(Msg).init(&cmds);
     // settings.should_log = true;
-    try zigkeys.run(alloc, Msg, &settings, Handler.handle);
+    try zigkeys.run(alloc, Msg, &settings, alloc, handle);
 }
