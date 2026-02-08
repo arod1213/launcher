@@ -1,1 +1,0 @@
-{ "key": {"val": 0, "flags": 256, "down": true}, "cmd": "browser", "retrigger": false, "trigger_per_ms": 60, "use": "open browser" }
