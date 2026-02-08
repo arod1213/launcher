@@ -19,6 +19,20 @@ fn installPath(alloc: Allocator) ![]const u8 {
     return try std.fmt.allocPrint(alloc, "{s}/documents/launcher/plugins", .{home});
 }
 
+fn getCommand(alloc: Allocator, install_path: []const u8, entry: std.fs.Dir.Entry) !KC {
+    if (entry.kind != .file) return error.InvalidType;
+    if (!std.mem.endsWith(u8, entry.name, ".lua")) return error.InvalidExtension;
+
+    const path = try std.fs.path.join(alloc, &[_][]const u8{ install_path, entry.name });
+    const plugin_ptr = try alloc.create(Plugin);
+    errdefer alloc.destroy(plugin_ptr);
+
+    plugin_ptr.* = try Plugin.init(alloc, @ptrCast(path), entry.name);
+    errdefer plugin_ptr.deinit();
+
+    return try plugin_ptr.getKey(alloc);
+}
+
 fn loadKeyCommands(alloc: Allocator) ![]const KC {
     const install_path = try installPath(alloc);
     var dir = try std.fs.openDirAbsolute(install_path, .{ .iterate = true });
@@ -29,20 +43,8 @@ fn loadKeyCommands(alloc: Allocator) ![]const KC {
 
     var iter = dir.iterate();
     while (try iter.next()) |entry| {
-        if (entry.kind != .file) continue;
-        if (!std.mem.endsWith(u8, entry.name, ".lua")) continue;
-
-        const path = try std.fs.path.join(alloc, &[_][]const u8{ install_path, entry.name });
-        const plugin_ptr = try alloc.create(Plugin);
-        plugin_ptr.* = try Plugin.init(alloc, @ptrCast(path), entry.name);
-
-        const kc = plugin_ptr.getKey(alloc) catch |err| {
-            std.log.err("Failed to get key command from '{s}': {}", .{ entry.name, err });
-            plugin_ptr.deinit();
-            continue;
-        };
-        // std.log.info("key {f} for {s}", .{ kc.key, kc.use });
-
+        // TODO: fix when file is empty others get corrupted
+        const kc = getCommand(alloc, install_path, entry) catch continue;
         try key_commands.append(alloc, kc);
     }
 
