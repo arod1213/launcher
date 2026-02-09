@@ -23,6 +23,7 @@ Each plugin is a Lua file that must define:
 The `key` table must have the following structure:
 
 ```lua
+-- modifier options are ["option", "shift", "control", "fn"]
 key = {
   keycode = 2,         --  The keycode for the key (e.g., 2 == d)
   modifiers = {        -- Optional list of modifier keys
