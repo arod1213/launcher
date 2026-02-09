@@ -24,13 +24,14 @@ The `key` table must have the following structure:
 
 ```lua
 key = {
-  keycode = 11,       -- The keycode for the key (e.g., 11 = Enter)
-  modifiers = {       -- Optional list of modifier keys
-    "control",
-    "option",
-    "command",
-    "fn"
-  },
+  keycode = 2,         --  The keycode for the key (e.g., 2 == d)
+  modifiers = {        -- Optional list of modifier keys
+        "control", 
+        "option" 
+    }, 
+  retrigger = false,   -- Enables multiple triggers per hold
+  trigger_per_ms = 0,  -- Speed of retrigger
+  down = true,         -- If key press or key release
 }
 ```
 
@@ -38,16 +39,21 @@ key = {
 
 The `main` function contains the code that will be executed when the key command is pressed:
 ```lua
-function  main()  os.execute("open -a 'Brave Browser'") end` 
+function  main()  
+    os.execute("open -a 'Brave Browser'") 
+end
 ```
 
 ### Example Plugin
 
 ```lua 
 key = {
-  keycode = 11, -- Enter key 
-  modifiers = { "control" },
-} 
+  keycode = 2, -- d        
+  modifiers = { "control", "option" }, 
+  retrigger = false,
+  trigger_per_ms = 0,
+  down = true,
+}
 function  main()  
 	os.execute("open -a 'Brave Browser'") 
 end

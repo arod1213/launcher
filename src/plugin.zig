@@ -62,6 +62,7 @@ fn parseModifier(s: []const u8) !Modifier {
     if (std.mem.eql(u8, s, "shift")) return .shift;
     if (std.mem.eql(u8, s, "command")) return .command;
     if (std.mem.eql(u8, s, "option")) return .option;
+    if (std.mem.eql(u8, s, "fn")) return .fn_key;
     return error.InvalidModifier;
 }
 
@@ -105,6 +106,7 @@ pub const Plugin = struct {
         const keycode = try readField(u8, self.lua, "keycode");
         const retrigger = readField(bool, self.lua, "retrigger") catch false;
         const trigger_per_ms = readField(u64, self.lua, "trigger_per_ms") catch null;
+        const down = readField(bool, self.lua, "down") catch true;
 
         _ = self.lua.getField(-1, "modifiers");
         var modifiers = try std.ArrayList(Modifier).initCapacity(alloc, 2);
@@ -127,7 +129,7 @@ pub const Plugin = struct {
         }
         self.lua.pop(1);
 
-        const key = Key.init(keycode, try modifiers.toOwnedSlice(alloc), true);
+        const key = Key.init(keycode, try modifiers.toOwnedSlice(alloc), down);
         var kc = KeyCommand(T).init(key, self, retrigger, self.name);
         if (trigger_per_ms) |tps| {
             kc.trigger_per_ms = tps;
