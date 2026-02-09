@@ -10,8 +10,8 @@ fn setupTermios(handle: posix.fd_t) !void {
 }
 
 pub fn main() !void {
-    const stdin = std.fs.File.stdin();
-    try setupTermios(stdin.handle);
+    // const stdin = std.fs.File.stdin();
+    // try setupTermios(stdin.handle);
 
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();

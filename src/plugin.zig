@@ -28,6 +28,35 @@ pub fn runLuaMain(lua: *Lua) !void {
     };
 }
 
+fn readField(comptime T: type, lua: *Lua, field_name: [:0]const u8) !T {
+    _ = lua.getField(-1, field_name);
+    defer lua.pop(1);
+    const info = @typeInfo(T);
+    const val: T = blk: switch (info) {
+        .bool => {
+            if (lua.typeOf(-1) != .boolean) {
+                return error.InvalidKeycode;
+            }
+            break :blk lua.toBoolean(-1);
+        },
+        .int => {
+            if (lua.typeOf(-1) != .number) {
+                return error.InvalidKeycode;
+            }
+            break :blk @intCast(try lua.toInteger(-1));
+        },
+        .float => {
+            if (lua.typeOf(-1) != .number) {
+                return error.InvalidKeycode;
+            }
+            break :blk @floatCast(try lua.toNumber(-1));
+        },
+        else => @compileLog("unsupported field type"),
+    };
+
+    return val;
+}
+
 fn parseModifier(s: []const u8) !Modifier {
     if (std.mem.eql(u8, s, "control")) return .control;
     if (std.mem.eql(u8, s, "shift")) return .shift;
@@ -73,12 +102,9 @@ pub const Plugin = struct {
         }
         defer self.lua.pop(1);
 
-        _ = self.lua.getField(-1, "keycode");
-        if (self.lua.typeOf(-1) != .number) {
-            return error.InvalidKeycode;
-        }
-        const keycode: u8 = @intCast(try self.lua.toInteger(-1));
-        self.lua.pop(1);
+        const keycode = try readField(u8, self.lua, "keycode");
+        const retrigger = readField(bool, self.lua, "retrigger") catch false;
+        const trigger_per_ms = readField(u64, self.lua, "trigger_per_ms") catch null;
 
         _ = self.lua.getField(-1, "modifiers");
         var modifiers = try std.ArrayList(Modifier).initCapacity(alloc, 2);
@@ -102,7 +128,11 @@ pub const Plugin = struct {
         self.lua.pop(1);
 
         const key = Key.init(keycode, try modifiers.toOwnedSlice(alloc), true);
-        return KeyCommand(T).init(key, self, false, self.name);
+        var kc = KeyCommand(T).init(key, self, retrigger, self.name);
+        if (trigger_per_ms) |tps| {
+            kc.trigger_per_ms = tps;
+        }
+        return kc;
     }
 
     pub fn deinit(self: *Plugin) void {

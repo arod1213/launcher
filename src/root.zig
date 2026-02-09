@@ -11,6 +11,7 @@ const T = *Plugin;
 const KC = zigkeys.KeyCommand(T);
 
 fn handle(_: anytype, k: KC) !void {
+    // std.log.info("TRIGGERING {s}", k.cmd.name);
     try k.cmd.execute();
 }
 
