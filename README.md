@@ -24,6 +24,8 @@ The `key` table must have the following structure:
 
 ```lua
 -- modifier options are ["option", "shift", "control", "fn"]
+-- modifiers can end in '_l' '_r' '_b' for left, ride, or both modifiers
+-- ex.) "control_l" only fires when left control is pressed
 key = {
   keycode = 2,         --  The keycode for the key (e.g., 2 == d)
   modifiers = {        -- Optional list of modifier keys
@@ -50,7 +52,7 @@ end
 ```lua 
 key = {
   keycode = 2, -- d        
-  modifiers = { "control", "option" }, 
+  modifiers = { "control", "option_r" },  -- either control + right option key
   retrigger = false,
   trigger_per_ms = 0,
   down = true,
