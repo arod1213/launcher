@@ -4,6 +4,7 @@ const Allocator = std.mem.Allocator;
 const zigkeys = @import("zigkeys");
 const Key = zigkeys.Key;
 const Modifier = zigkeys.Modifier;
+const Side = zigkeys.Side;
 const KeyCommand = zigkeys.KeyCommand;
 
 const zlua = @import("zlua");
@@ -57,11 +58,39 @@ fn readField(comptime T: type, lua: *Lua, field_name: [:0]const u8) !T {
     return val;
 }
 
+fn parseModifierSide(input: []const u8, name: []const u8) Side {
+    if (input.len <= name.len) {
+        return .either;
+    }
+    const last_char = input[input.len - 1];
+    return switch (last_char) {
+        'r' => .right,
+        'b' => .both,
+        'l' => .left,
+        else => .either,
+    };
+}
+
 fn parseModifier(s: []const u8) !Modifier {
-    if (std.mem.eql(u8, s, "control")) return .{ .control = .either };
-    if (std.mem.eql(u8, s, "shift")) return .{ .shift = .either };
-    if (std.mem.eql(u8, s, "command")) return .{ .command = .either };
-    if (std.mem.eql(u8, s, "option")) return .{ .option = .either };
+    if (s.len == 0) {
+        return error.EmptyString;
+    }
+    if (std.mem.startsWith(u8, s, "control")) {
+        const side = parseModifierSide(s, "control");
+        return Modifier{ .control = side };
+    }
+    if (std.mem.startsWith(u8, s, "shift")) {
+        const side = parseModifierSide(s, "shift");
+        return Modifier{ .shift = side };
+    }
+    if (std.mem.startsWith(u8, s, "option")) {
+        const side = parseModifierSide(s, "option");
+        return Modifier{ .option = side };
+    }
+    if (std.mem.startsWith(u8, s, "command")) {
+        const side = parseModifierSide(s, "command");
+        return Modifier{ .command = side };
+    }
     if (std.mem.eql(u8, s, "fn")) return .{ .fn_key = {} };
     return error.InvalidModifier;
 }
