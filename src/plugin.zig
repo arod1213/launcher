@@ -58,11 +58,11 @@ fn readField(comptime T: type, lua: *Lua, field_name: [:0]const u8) !T {
 }
 
 fn parseModifier(s: []const u8) !Modifier {
-    if (std.mem.eql(u8, s, "control")) return .control;
-    if (std.mem.eql(u8, s, "shift")) return .shift;
-    if (std.mem.eql(u8, s, "command")) return .command;
-    if (std.mem.eql(u8, s, "option")) return .option;
-    if (std.mem.eql(u8, s, "fn")) return .fn_key;
+    if (std.mem.eql(u8, s, "control")) return .{ .control = .either };
+    if (std.mem.eql(u8, s, "shift")) return .{ .shift = .either };
+    if (std.mem.eql(u8, s, "command")) return .{ .command = .either };
+    if (std.mem.eql(u8, s, "option")) return .{ .option = .either };
+    if (std.mem.eql(u8, s, "fn")) return .{ .fn_key = {} };
     return error.InvalidModifier;
 }
 
