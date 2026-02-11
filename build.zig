@@ -25,6 +25,12 @@ pub fn build(b: *std.Build) void {
         },
     });
 
+    const menuczar_dep = b.dependency("menuczar", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const menuczar = menuczar_dep.module("menuczar");
+
     const exe = b.addExecutable(.{
         .name = "launcher",
         .root_module = b.createModule(.{
@@ -32,6 +38,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .imports = &.{
+                .{ .name = "menuczar", .module = menuczar },
                 .{ .name = "launcher", .module = mod },
             },
         }),

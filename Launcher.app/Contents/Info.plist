@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>launcher</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.aidanrodriguez.launcher</string>
+    <key>CFBundleName</key>
+    <string>Launcher</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.13</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>This app needs access to your Documents folder to manage files.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This app needs to listen to keyboard events for hotkey functionality.</string>
+</dict>
+</plist>

@@ -33,12 +33,16 @@
     // internet connectivity.
     .dependencies = .{
         .zigkeys = .{
-            .url = "git+https://github.com/arod1213/zigkeys#f047d916d7aae229bbb9f9b85e13d376cb1c0306",
-            .hash = "zigkeys-0.0.0-muU9lGRXAAAEhsJgeOWUBNIk7xxX4bhQvH5qtbOpcYPi",
+            .url = "git+https://github.com/arod1213/zigkeys.git#518c1bca86f1075bf11b4194d3d06e20248bec19",
+            .hash = "zigkeys-0.0.0-muU9lIxYAACy2S1gFxQQ6fGKEXAVTsQbMD8iNvyYRGUc",
         },
         .zlua = .{
             .url = "git+https://github.com/natecraddock/ziglua#cf0e794d429093f0f15694898636a658ebceb703",
             .hash = "zlua-0.1.0-hGRpC-xTBQARfQcp_35Rcs-Z6KDqtEf3N-IRWi9NFogn",
+        },
+        .menuczar = .{
+            .url = "git+https://github.com/arod1213/menuczar.git#c9cceabecc17aaa6ed3cdce535de82fbc0beff16",
+            .hash = "menuczar-0.0.0-k_xJK4gbAABUztGozI5KtFD1UD5iDrXNqdTUuLCqgAj4",
         },
     },
     .paths = .{
