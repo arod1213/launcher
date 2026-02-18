@@ -1,5 +1,5 @@
 key = {
-  keycode = 11, -- b
+  keycode = 36, -- enter
   modifiers = { "control" },
   retrigger = false,
   trigger_per_ms = 0,
@@ -7,5 +7,5 @@ key = {
 }
 
 function main()
-  os.execute("open -a 'Brave Browser'")
+  os.execute("open -a 'Ghostty'")
 end

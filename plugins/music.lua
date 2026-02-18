@@ -1,5 +1,5 @@
 key = {
-  keycode = 11, -- b
+  keycode = 1, -- s
   modifiers = { "control" },
   retrigger = false,
   trigger_per_ms = 0,
@@ -7,5 +7,5 @@ key = {
 }
 
 function main()
-  os.execute("open -a 'Brave Browser'")
+  os.execute("open -a 'Tidal'")
 end
