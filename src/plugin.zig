@@ -11,10 +11,7 @@ const zlua = @import("zlua");
 const Lua = zlua.Lua;
 
 pub fn runLuaMain(lua: *Lua) !void {
-    const lua_type = lua.getGlobal("main") catch |err| {
-        std.log.err("Failed to get 'main': {}", .{err});
-        return err;
-    };
+    const lua_type = lua.getGlobal("main");
 
     if (lua_type != .function) {
         std.log.err("'main' is not a function, it's a {}", .{lua_type});
@@ -121,10 +118,7 @@ pub const Plugin = struct {
     }
 
     pub fn getKey(self: *Plugin, alloc: Allocator) !KeyCommand(T) {
-        const lua_type = self.lua.getGlobal("key") catch |err| {
-            std.log.err("Failed to get 'key': {}", .{err});
-            return err;
-        };
+        const lua_type = self.lua.getGlobal("key");
 
         if (lua_type != .table) {
             std.log.err("'key' is not a table, it's a {}", .{lua_type});
@@ -142,9 +136,9 @@ pub const Plugin = struct {
         defer modifiers.deinit(alloc);
 
         if (self.lua.typeOf(-1) == .table) {
-            var i: i32 = 1;
+            var i: zlua.Integer = 1;
             while (true) : (i += 1) {
-                _ = self.lua.rawGetIndex(-1, i);
+                _ = self.lua.getIndexRaw(-1, i);
                 if (self.lua.typeOf(-1) == .nil) {
                     self.lua.pop(1);
                     break;

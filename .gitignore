@@ -3,3 +3,5 @@ zig-out/*
 *.txt
 *.DS_Store
 *.sh
+*.app/
+zig-pkg/

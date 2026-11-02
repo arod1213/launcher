@@ -9,13 +9,13 @@ fn setupTermios(handle: posix.fd_t) !void {
     _ = try posix.tcsetattr(handle, posix.TCSA.NOW, settings);
 }
 
-pub fn main() !void {
-    // const stdin = std.fs.File.stdin();
+pub fn main(init: std.process.Init) !void {
+    const home = init.environ_map.get("HOME") orelse @panic("missing HOME");
+    const io = init.io;
+    // const stdin = std.Io.File.stdin();
     // try setupTermios(stdin.handle);
 
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const alloc = arena.allocator();
+    const alloc = init.arena.allocator();
 
-    try launcher.run(alloc);
+    try launcher.run(io, alloc, home);
 }

@@ -17,10 +17,10 @@ fn handle(_: anytype, k: KC) !void {
     try k.cmd.execute();
 }
 
-pub fn run(alloc: Allocator) !void {
+pub fn run(io: std.Io, alloc: Allocator, home: []const u8) !void {
     const loader = setup.commandLoader(T);
-    const kcs = try loader.parseCommands(alloc);
+    const kcs = try loader.parseCommands(io, alloc, home);
     var settings = zigkeys.Config(T).init(kcs);
     // settings.should_log = true;
-    try zigkeys.run(alloc, T, &settings, null, handle);
+    try zigkeys.run(io, alloc, T, &settings, null, handle);
 }
